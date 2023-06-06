@@ -216,8 +216,9 @@ under the License.
           </execution>
         </executions>
       </plugin>
-      
-      <plugin>
+
+<!--      This plugin copy a csv file used in original Syncope test   -->
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
         <inherited>true</inherited>
@@ -235,7 +236,7 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -268,7 +269,7 @@ under the License.
         </executions>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>org.codehaus.cargo</groupId>
         <artifactId>cargo-maven3-plugin</artifactId>
         <inherited>true</inherited>
@@ -344,7 +345,7 @@ under the License.
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -415,7 +416,7 @@ under the License.
 
       <build>
         <plugins>
-          <plugin>
+          <!--<plugin>
             <groupId>io.fabric8</groupId>
             <artifactId>docker-maven-plugin</artifactId>
             <configuration>
@@ -455,7 +456,7 @@ under the License.
                 </goals>
               </execution>
             </executions>
-          </plugin>
+          </plugin>-->
 
           <plugin>
             <groupId>org.codehaus.cargo</groupId>
