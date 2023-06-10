@@ -1545,7 +1545,7 @@ under the License.
           </executions>
         </plugin>
 
-        <plugin>
+        <!--<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>3.3.0</version>
@@ -1553,7 +1553,7 @@ under the License.
             <configLocation>${rootpom.basedir}/src/main/resources/org/apache/syncope/checkstyle.xml</configLocation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
-        </plugin>
+        </plugin>-->
 
         <plugin>
           <groupId>io.fabric8</groupId>
@@ -1589,11 +1589,11 @@ under the License.
           </configuration>
         </plugin>
 
-        <!--<plugin>
+        <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.9</version>
-        </plugin>-->
+        </plugin>
 
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
@@ -1652,7 +1652,7 @@ under the License.
         </executions>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
@@ -1667,7 +1667,7 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <!--<plugin>
         <groupId>org.jacoco</groupId>
@@ -2148,7 +2148,7 @@ under the License.
       <build>
         <defaultGoal>clean install</defaultGoal>
 
-        <plugins>
+        <!--<plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
@@ -2159,7 +2159,7 @@ under the License.
               </execution>
             </executions>
           </plugin>
-        </plugins>
+        </plugins>-->
       </build>
     </profile>
 

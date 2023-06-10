@@ -36,6 +36,11 @@ under the License.
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.syncope.core</groupId>
+            <artifactId>syncope-core-spring</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--<dependency>
             <groupId>${project.parent.groupId}</groupId>
             <artifactId>syncope-archetype</artifactId>
             <version>${project.parent.version}</version>
@@ -429,7 +434,7 @@ under the License.
             <groupId>${project.parent.groupId}.wa</groupId>
             <artifactId>syncope-wa-starter</artifactId>
             <version>${project.parent.version}</version>
-        </dependency>
+        </dependency>-->
     </dependencies>
 
     <build>
