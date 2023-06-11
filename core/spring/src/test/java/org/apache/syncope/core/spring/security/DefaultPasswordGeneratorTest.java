@@ -68,7 +68,7 @@ class DefaultPasswordGeneratorTest {
         return List.of(new TestPasswordPolicy(passwordRule));
     }
 
-    private static Stream<Object> parameters() throws NoSuchMethodException {
+    private static Stream<Object> parameters() {
         List<Object> args = new ArrayList<>();
 
         //These tests verify the correctness of the generated password, with different policies.
