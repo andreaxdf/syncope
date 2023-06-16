@@ -2173,12 +2173,7 @@ under the License.
 
     <!-- JaCoCo profile for coverage analysis -->
     <profile>
-      <id>jacoco-coverage</id>
-      <activation>
-        <property>
-          <name>!skipCoverage</name>
-        </property>
-      </activation>
+      <id>jacoco</id>
       <build>
         <plugins>
           <plugin>

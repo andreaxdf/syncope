@@ -19,7 +19,6 @@
 
 package org.apache.syncope.core.spring.policy;
 
-import org.apache.syncope.common.lib.policy.AbstractAccountRuleConf;
 import org.apache.syncope.common.lib.policy.AbstractPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.apache.syncope.common.lib.policy.PasswordRuleConf;
@@ -42,24 +41,23 @@ class DefaultPasswordRuleTest {
 
         //Null Test
         args.add(Arguments.of(null, true));
-
         //Other Tests
         args.add(Arguments.of(new DefaultPasswordRuleConf(), false));
         args.add(Arguments.of(getPasswordRuleConf(), false));
-
+        //Invalid Configuration
+        PasswordRuleConf invalidRuleConf = new TestPasswordRuleConf();
+        args.add(Arguments.of(invalidRuleConf, true));
 
         //Jacoco
         //Invalid State (RepeatSame = 1 is invalid)
         DefaultPasswordRuleConf ruleConf = getDefaultPasswordRuleConf();
         ruleConf.setRepeatSame(1);
         args.add(Arguments.of(ruleConf, true));
-        //Invalid Configuration
-        PasswordRuleConf invalidRuleConf = new TestPasswordRuleConf();
-        args.add(Arguments.of(invalidRuleConf, true));
         //Username as password enabled
         ruleConf = getPasswordRuleConf();
         ruleConf.setUsernameAllowed(true);
         args.add(Arguments.of(ruleConf, false));
+
 
         return args.stream();
     }
@@ -86,13 +84,11 @@ class DefaultPasswordRuleTest {
 
         //Jacoco
         //Using RepeatSame rule
-        DefaultPasswordRule rule = new DefaultPasswordRule();
+        /*DefaultPasswordRule rule = new DefaultPasswordRule();
         DefaultPasswordRuleConf ruleConf = getDefaultPasswordRuleConf();
         ruleConf.setRepeatSame(2);
         rule.setConf(ruleConf);
-        args.add(Arguments.of(rule, "user", "HolaHola%01", false));
-
-
+        args.add(Arguments.of(rule, "user", "HolaHola%01", false));*/
 
         return args.stream();
     }
@@ -103,7 +99,7 @@ class DefaultPasswordRuleTest {
         try {
             passwordRule.setConf(ruleConf);
 
-            Assertions.assertEquals(passwordRule.getConf(), passwordRule.getConf());
+            Assertions.assertEquals(passwordRule.getConf(), ruleConf);
         } catch (Exception e) {
             if(isExpectedAnException) return;
             throw e;

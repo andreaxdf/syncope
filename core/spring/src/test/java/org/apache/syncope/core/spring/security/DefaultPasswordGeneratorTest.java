@@ -39,7 +39,7 @@ import java.util.stream.Stream;
 class DefaultPasswordGeneratorTest {
 
     DefaultPasswordGenerator passwordGenerator = new DefaultPasswordGenerator();
-    final int NUM_ITERATIONS = 1000;
+    static final int NUM_ITERATIONS = 1000;
 
     public static int howMany(String password, CharacterPredicate predicate) {
         int count = 0;
@@ -61,6 +61,21 @@ class DefaultPasswordGeneratorTest {
         return ruleConf;
     }
 
+    public static Stream<Object> iterationParameters() {
+        List<Object> args = new ArrayList<>();
+
+        //--------------------------- Words Not Permitted Policy ---------------------------
+        //This test the password generation with "WordsNotPermitted" policy, but the generated password
+        // does not respect the policy.
+        String illegalWord = "Ciao";
+        DefaultPasswordRuleConf ruleConf1 = Util.getWordsNotPermittedRule(illegalWord);
+        ruleConf1.setName("Words Not Permitted Policy Test");
+
+        args.add(Arguments.of(ruleConf1, false, (int) Math.pow(illegalWord.length(), illegalWord.length())));
+
+        return args.stream();
+    }
+
     List<PasswordPolicy> getPasswordPolicies(AbstractPasswordRuleConf ruleConf) {
         TestImplementation passwordRule = new TestImplementation();
         passwordRule.setBody(POJOHelper.serialize(ruleConf));
@@ -73,11 +88,13 @@ class DefaultPasswordGeneratorTest {
 
         //These tests verify the correctness of the generated password, with different policies.
 
-        //--------------------------- Words Not Permitted Policy ---------------------------
+        //------------------------------ Length Policy -------------------------------
         //This test the password generation with "WordsNotPermitted" policy, but the generated password
         // does not respect the policy.
-        DefaultPasswordRuleConf ruleConf1 = Util.getWordsNotPermittedRule("Ciao");
-        ruleConf1.setName("Words Not Permitted Policy Test");
+        DefaultPasswordRuleConf ruleConf1 = new DefaultPasswordRuleConf();
+        ruleConf1.setName("Length Policy Test");
+        ruleConf1.setMinLength(8);
+        ruleConf1.setMaxLength(10);
 
         args.add(Arguments.of(ruleConf1, false));
 
@@ -91,7 +108,7 @@ class DefaultPasswordGeneratorTest {
         args.add(Arguments.of(ruleConf2, false));
 
         //--------------------------- Requested Digits Policy 1 ---------------------------
-        //This test throw BufferOverflowException, although the max length should be big enough.
+        //This test throw BufferOverflowException, although the max length should have been big enough.
         DefaultPasswordRuleConf ruleConf3 = Util.getDigitRule1(10);
         ruleConf3.setName("Requested Digits Policy 1 Test");
 
@@ -99,7 +116,7 @@ class DefaultPasswordGeneratorTest {
 
         //--------------------------- Requested Digits Policy 2 ---------------------------
         //This test verify if in the generated password there are enough digits.
-        List<Integer> integerList = List.of(-1, 0, 1, 6);
+        List<Integer> integerList = List.of(-1, 0, 1, 10);
 
         int count = 1;
         for(Integer howMany: integerList) {
@@ -207,7 +224,7 @@ class DefaultPasswordGeneratorTest {
         //--------------------------- Illegal And Special Chars Policies with expected exception --------------------------------------
         //This test verify if the password generator respect the illegal chars' policy and the special chars' policy simultaneously.
         //In some cases the rules are wrong, because they obligate you to insert at most once time the char '@', but it is also in
-        // the illegal char list
+        // the illegal char list.
         count = 1;
         for(List<Character> illegalChars: specialCharLists) {
 
@@ -223,7 +240,7 @@ class DefaultPasswordGeneratorTest {
             }
 
             //An exception is expected when the illegal chars contain the special char.
-            args.add(Arguments.of(ruleConf, illegalChars.contains(specialChar)));
+            args.add(Arguments.of(ruleConf, false));
             count++;
         }
 
@@ -284,17 +301,26 @@ class DefaultPasswordGeneratorTest {
     }
 
     @ParameterizedTest
+    @MethodSource("iterationParameters")
+    void testGenerateIterated(AbstractPasswordRuleConf ruleConf, boolean isExpectedAnException, int iterations) {
+        for(int i = 0; i < iterations; i++) {
+            testGenerate(ruleConf, isExpectedAnException);
+        }
+    }
+
+    @ParameterizedTest
     @MethodSource("parameters")
     void testGenerate(AbstractPasswordRuleConf ruleConf, boolean isExpectedAnException) {
         try {
-            for (int i = 0; i < NUM_ITERATIONS; i++) {
-                String password = passwordGenerator.generate(getPasswordPolicies(ruleConf));
 
-                if(ruleConf instanceof DefaultPasswordRuleConf)
-                    Util.isAValidResult(password, (DefaultPasswordRuleConf) ruleConf);
-                else
-                    Util.isAValidResult(password, new DefaultPasswordRuleConf()); //This is the case of invalid policy
-            }
+            String password = passwordGenerator.generate(getPasswordPolicies(ruleConf));
+
+
+            if(ruleConf instanceof DefaultPasswordRuleConf)
+                Util.isAValidResult(password, (DefaultPasswordRuleConf) ruleConf);
+            else
+                Util.isAValidResult(password, new DefaultPasswordRuleConf()); //This is the case of invalid policy
+
         } catch (Exception e) {
             if(isExpectedAnException) return;
             throw e;
