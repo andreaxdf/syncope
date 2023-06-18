@@ -49,12 +49,14 @@ class DefaultPasswordRuleTest {
         args.add(Arguments.of(invalidRuleConf, true));
 
         //Jacoco
-        /*//Invalid State (RepeatSame = 1 is invalid)
+        //Invalid State (RepeatSame = 1 is invalid)
         DefaultPasswordRuleConf ruleConf = getDefaultPasswordRuleConf();
         ruleConf.setRepeatSame(1);
         args.add(Arguments.of(ruleConf, true));
+
+        //PIT
         //Username as password enabled
-        ruleConf = getPasswordRuleConf();
+        /*ruleConf = getPasswordRuleConf();
         ruleConf.setUsernameAllowed(true);
         args.add(Arguments.of(ruleConf, false));*/
 
@@ -86,11 +88,11 @@ class DefaultPasswordRuleTest {
 
         //Jacoco
         //Using RepeatSame rule
-        /*DefaultPasswordRule rule = new DefaultPasswordRule();
+        DefaultPasswordRule rule = new DefaultPasswordRule();
         DefaultPasswordRuleConf ruleConf = getDefaultPasswordRuleConf();
         ruleConf.setRepeatSame(2);
         rule.setConf(ruleConf);
-        args.add(Arguments.of(rule, "user", "HolaHola%01", false));*/
+        args.add(Arguments.of(rule, "user", "HolaHola%01", false));
 
         return args.stream();
     }
