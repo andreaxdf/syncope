@@ -20,11 +20,21 @@ package org.apache.syncope.core.spring.security;
 
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
 import org.junit.jupiter.api.Assertions;
+import org.passay.PasswordData;
+import org.passay.RepeatCharactersRule;
+import org.passay.RuleResult;
 
 import java.util.List;
 
 
 public class Util {
+
+    private static final int VERY_MIN_LENGTH = 0;
+
+    private static final int DEFAULT_MAX_LENGTH = 64;
+
+    private static final int DEFAULT_MIN_LENGTH = 8;
+
 
     public static DefaultPasswordRuleConf getWordsNotPermittedRule(String string) {
         DefaultPasswordRuleConf ruleConf = new DefaultPasswordRuleConf();
@@ -123,10 +133,22 @@ public class Util {
         if(ruleConf.getUppercase() > 0) {
             Assertions.assertTrue(isUppercaseRuleRespected(password, ruleConf.getUppercase()));
         }
-        int minLength = ruleConf.getMinLength() > 0 ? ruleConf.getMinLength() : 8;
-        int maxLength = ruleConf.getMaxLength() > 0 ? ruleConf.getMaxLength() : 64;
+        if(ruleConf.getRepeatSame() > 0) {
+            Assertions.assertTrue(isRepeatSameRuleRespected(password, ruleConf.getRepeatSame()));
+        }
+        int minLength = ruleConf.getMinLength() > 0 ? ruleConf.getMinLength() : DEFAULT_MIN_LENGTH;
+        int maxLength = ruleConf.getMaxLength() > 0 ? ruleConf.getMaxLength() : DEFAULT_MAX_LENGTH;
+        if(maxLength < DEFAULT_MIN_LENGTH) minLength = maxLength;
 
         Assertions.assertTrue(isLengthRespected(password, minLength, maxLength));
 
+    }
+
+    private static boolean isRepeatSameRuleRespected(String password, int repeatSame) {
+        RepeatCharactersRule rule = new RepeatCharactersRule(repeatSame);
+        PasswordData passwordData = new PasswordData(password);
+        RuleResult result = rule.validate(passwordData);
+
+        return result.isValid();
     }
 }

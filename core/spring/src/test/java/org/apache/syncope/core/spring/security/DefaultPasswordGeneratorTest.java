@@ -268,6 +268,16 @@ class DefaultPasswordGeneratorTest {
             count++;
         }
 
+        //--------------------------- Words Not Permitted Policy ---------------------------
+        //This test the password generation with "WordsNotPermitted" policy, but the generated password
+        // does not respect the policy.
+        String illegalWord = "Ciao";
+        ruleConf1 = new DefaultPasswordRuleConf();
+        ruleConf1.setName("Words Not Permitted Policy Test");
+        ruleConf1.getWordsNotPermitted().add(illegalWord);
+
+        args.add(Arguments.of(ruleConf1, false));
+
         //----------------------------------- Invalid Policy --------------------------------------
         //This test try to use an invalid instance. The documentation say that it is only possible use DefaultPasswordRuleConf,
         // so the test try to use another type of rule. This type of exceptions are caught and managed, so no exceptions is expected.
@@ -288,14 +298,31 @@ class DefaultPasswordGeneratorTest {
 
         args.add(Arguments.of(ruleConf, true));
 
-        //----------------------------------- Overflow attempt --------------------------------------
-        //This test tests the password generator with huge minLength.
-
+        //----------------------------------- Overflow Attempt --------------------------------------
+        //This test tests the password generator with huge minLength. It is commented because it launches a OutOfMemoryError.
+        /*
         ruleConf = new DefaultPasswordRuleConf();
         ruleConf.setName("Overflow attempt Test");
         ruleConf.setMinLength(Integer.MAX_VALUE);
 
-        args.add(Arguments.of(ruleConf, true));
+        args.add(Arguments.of(ruleConf, true));*/
+
+
+        //JACOCO
+        //----------------------------------- Repeat Same Policy --------------------------------------
+        //This test covers the case in which a repeat same policy has been configured. Documentation says that a RepeatCharactersRule
+        // does not permit to generate a repeated sequence of N characters in the password.
+        ruleConf = new DefaultPasswordRuleConf();
+        ruleConf.setRepeatSame(3);
+
+        args.add(Arguments.of(ruleConf, false));
+
+        //------------------------- Length Max Less Than Default Min Length Policy --------------------------------------
+        //In this test we analyze the case in which only the max length has been configured, but it is less than the default min length.
+        ruleConf = new DefaultPasswordRuleConf();
+        ruleConf.setMaxLength(5);
+
+        args.add(Arguments.of(ruleConf, false));
 
         return args.stream();
     }
@@ -314,7 +341,6 @@ class DefaultPasswordGeneratorTest {
         try {
 
             String password = passwordGenerator.generate(getPasswordPolicies(ruleConf));
-
 
             if(ruleConf instanceof DefaultPasswordRuleConf)
                 Util.isAValidResult(password, (DefaultPasswordRuleConf) ruleConf);

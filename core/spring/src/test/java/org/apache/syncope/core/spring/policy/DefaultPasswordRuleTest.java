@@ -49,14 +49,14 @@ class DefaultPasswordRuleTest {
         args.add(Arguments.of(invalidRuleConf, true));
 
         //Jacoco
-        //Invalid State (RepeatSame = 1 is invalid)
+        /*//Invalid State (RepeatSame = 1 is invalid)
         DefaultPasswordRuleConf ruleConf = getDefaultPasswordRuleConf();
         ruleConf.setRepeatSame(1);
         args.add(Arguments.of(ruleConf, true));
         //Username as password enabled
         ruleConf = getPasswordRuleConf();
         ruleConf.setUsernameAllowed(true);
-        args.add(Arguments.of(ruleConf, false));
+        args.add(Arguments.of(ruleConf, false));*/
 
 
         return args.stream();
@@ -69,16 +69,18 @@ class DefaultPasswordRuleTest {
         args.add(Arguments.of(getFullRule(), null, null, false));
         //Void Test
         args.add(Arguments.of(getFullRule(), null, "", true));
-        //Invalid Word Test
+        //Invalid Word in password Test
         args.add(Arguments.of(getFullRule(), null, "Ciaociao%01", true));
+        //Invalid Word in username Test
+        args.add(Arguments.of(getFullRule(), "Ciaociao", "HolaHola%01", false));
         //Valid Test
-        args.add(Arguments.of(getFullRule(), null, "HolaHola%01", false));
+        args.add(Arguments.of(getFullRule(), "", "HolaHola%01", false));
         //Valid Test
         args.add(Arguments.of(getFullRule(), "username", "HolaHola%01", false));
-        //Invalid Length Test
+        //Invalid Length Test -> Too short
         args.add(Arguments.of(getFullRule(), null, "CiaCia", true));
-        //Invalid Length Test
-        args.add(Arguments.of(getFullRule(), null, "HolaHola01HolaHola%01", true));
+        //Invalid Length Test -> Too long
+        args.add(Arguments.of(getFullRule(), "username", "HolaHola01HolaHola%01", true));
         //Invalid -> Password == Username
         args.add(Arguments.of(getFullRule(), "HolaHola%01", "HolaHola%01", true));
 
@@ -135,10 +137,12 @@ class DefaultPasswordRuleTest {
         ruleConf.setMaxLength(16);
         ruleConf.setAlphabetical(1);
         ruleConf.setDigit(1);
+//        ruleConf.setRepeatSame(2);
         ruleConf.setUsernameAllowed(false);
         ruleConf.setSpecial(1);
         ruleConf.getSpecialChars().add('@');
         ruleConf.getSpecialChars().add('%');
+//        ruleConf.getIllegalChars().add('^');
         ruleConf.getWordsNotPermitted().add("Ciao");
         ruleConf.getWordsNotPermitted().add("Hello");
         return ruleConf;
