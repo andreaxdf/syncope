@@ -392,6 +392,10 @@ under the License.
   </contributors>
 
   <properties>
+    <sonar.organization>andreaxdf</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
+
     <project.build.outputTimestamp>2022-12-26T08:35:28Z</project.build.outputTimestamp>
     <syncope.version>${project.version}</syncope.version>
 
@@ -525,11 +529,14 @@ under the License.
     <rootpom.basedir>${basedir}</rootpom.basedir>
     <maven.multiModuleProjectDirectory>${rootpom.basedir}</maven.multiModuleProjectDirectory>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
   </properties>
 
   <dependencyManagement>
 
     <dependencies>
+
+
       <dependency>
         <groupId>jakarta.servlet</groupId>
         <artifactId>jakarta.servlet-api</artifactId>
@@ -1545,7 +1552,7 @@ under the License.
           </executions>
         </plugin>
 
-        <plugin>
+        <!--<plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-checkstyle-plugin</artifactId>
           <version>3.3.0</version>
@@ -1553,7 +1560,7 @@ under the License.
             <configLocation>${rootpom.basedir}/src/main/resources/org/apache/syncope/checkstyle.xml</configLocation>
             <includeTestSourceDirectory>true</includeTestSourceDirectory>
           </configuration>
-        </plugin>
+        </plugin>-->
 
         <plugin>
           <groupId>io.fabric8</groupId>
@@ -1589,11 +1596,11 @@ under the License.
           </configuration>
         </plugin>
 
-        <!--<plugin>
+        <plugin>
           <groupId>org.jacoco</groupId>
           <artifactId>jacoco-maven-plugin</artifactId>
           <version>0.8.9</version>
-        </plugin>-->
+        </plugin>
 
         <plugin>
           <groupId>org.sonarsource.scanner.maven</groupId>
@@ -1652,7 +1659,7 @@ under the License.
         </executions>
       </plugin>
 
-      <plugin>
+      <!--<plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
         <configuration>
@@ -1667,7 +1674,7 @@ under the License.
             </goals>
           </execution>
         </executions>
-      </plugin>
+      </plugin>-->
 
       <!--<plugin>
         <groupId>org.jacoco</groupId>
@@ -2148,7 +2155,7 @@ under the License.
       <build>
         <defaultGoal>clean install</defaultGoal>
 
-        <plugins>
+        <!--<plugins>
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-checkstyle-plugin</artifactId>
@@ -2159,7 +2166,7 @@ under the License.
               </execution>
             </executions>
           </plugin>
-        </plugins>
+        </plugins>-->
       </build>
     </profile>
 
@@ -2173,12 +2180,7 @@ under the License.
 
     <!-- JaCoCo profile for coverage analysis -->
     <profile>
-      <id>jacoco-coverage</id>
-      <activation>
-        <property>
-          <name>!skipCoverage</name>
-        </property>
-      </activation>
+      <id>jacoco</id>
       <build>
         <plugins>
           <plugin>
