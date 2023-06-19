@@ -30,7 +30,7 @@ jobs:
       - name: Build and analyze syncope project
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        run: mvn clean verify -P pit
+        run: mvn clean verify -P pit -Drat.skip -Dcheckstyle.skip
       - name: Upload report
         uses: actions/upload-artifact@v3
         with:
