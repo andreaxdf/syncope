@@ -19,6 +19,7 @@
 package org.apache.syncope.core.spring.security;
 
 import org.apache.syncope.common.lib.policy.DefaultPasswordRuleConf;
+import org.apache.syncope.core.spring.policy.DefaultPasswordRule;
 import org.junit.jupiter.api.Assertions;
 import org.passay.PasswordData;
 import org.passay.RepeatCharactersRule;
@@ -73,6 +74,18 @@ public class Util {
         return false;
     }
 
+    public static int howManySpecials(String string, List<Character> searched) {
+        int count = 0;
+
+        for(char c: string.toCharArray()) {
+            if(searched.contains(c)) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
     public static boolean isDigitRuleRespected(String password, int howMany) {
         return DefaultPasswordGeneratorTest.howMany(password, Character::isDigit) >= howMany;
     }
@@ -81,8 +94,8 @@ public class Util {
         return DefaultPasswordGeneratorTest.howMany(password, Character::isAlphabetic) >= howMany;
     }
 
-    public static boolean isSpecialCharsRuleRespected(String password, List<Character> specialCharList) {
-        return checkPresence(password, specialCharList);
+    public static boolean isSpecialCharsRuleRespected(String password, List<Character> specialCharList, int howMany) {
+        return howManySpecials(password, specialCharList) >= howMany;
     }
 
     public static boolean isUppercaseRuleRespected(String password, int howMany) {
@@ -112,27 +125,30 @@ public class Util {
 
     public static void isAValidResult(String password, DefaultPasswordRuleConf ruleConf) {
 
-        if(ruleConf.getSpecial() > 0) {
-            Assertions.assertTrue(isSpecialCharsRuleRespected(password, ruleConf.getSpecialChars()));
-        }
+        DefaultPasswordRule rule = new DefaultPasswordRule();
+        rule.setConf(ruleConf);
+
+        rule.enforce((String) null, password);
+
+        /*Assertions.assertTrue(isSpecialCharsRuleRespected(password, ruleConf.getSpecialChars(), ruleConf.getSpecial()));
+
         if(!ruleConf.getIllegalChars().isEmpty()) {
             Assertions.assertTrue(isIllegalCharsRuleRespected(password, ruleConf.getIllegalChars()));
         }
-        if(ruleConf.getAlphabetical() > 0) {
-            Assertions.assertTrue(isAlphabeticalRuleRespected(password, ruleConf.getAlphabetical()));
-        }
-        if(ruleConf.getDigit() > 0) {
-            Assertions.assertTrue(isDigitRuleRespected(password, ruleConf.getDigit()));
-        }
+
+        Assertions.assertTrue(isAlphabeticalRuleRespected(password, ruleConf.getAlphabetical()));
+
+
+        Assertions.assertTrue(isDigitRuleRespected(password, ruleConf.getDigit()));
+
         if(!ruleConf.getWordsNotPermitted().isEmpty()) {
             Assertions.assertTrue(isWordNotPermittedPolicyRespected(password, ruleConf.getWordsNotPermitted()));
         }
-        if(ruleConf.getLowercase() > 0) {
-            Assertions.assertTrue(isLowercaseRuleRespected(password, ruleConf.getLowercase()));
-        }
-        if(ruleConf.getUppercase() > 0) {
-            Assertions.assertTrue(isUppercaseRuleRespected(password, ruleConf.getUppercase()));
-        }
+
+        Assertions.assertTrue(isLowercaseRuleRespected(password, ruleConf.getLowercase()));
+
+        Assertions.assertTrue(isUppercaseRuleRespected(password, ruleConf.getUppercase()));
+
         if(ruleConf.getRepeatSame() > 0) {
             Assertions.assertTrue(isRepeatSameRuleRespected(password, ruleConf.getRepeatSame()));
         }
@@ -140,7 +156,7 @@ public class Util {
         int maxLength = ruleConf.getMaxLength() > 0 ? ruleConf.getMaxLength() : DEFAULT_MAX_LENGTH;
         if(maxLength < DEFAULT_MIN_LENGTH) minLength = maxLength;
 
-        Assertions.assertTrue(isLengthRespected(password, minLength, maxLength));
+        Assertions.assertTrue(isLengthRespected(password, minLength, maxLength));*/
 
     }
 
