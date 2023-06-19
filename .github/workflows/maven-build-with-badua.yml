@@ -4,8 +4,11 @@
 name: Badua build
 
 on:
-  release:
-    types: [created]
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build:
@@ -39,6 +42,6 @@ jobs:
       - name: Upload report
         uses: actions/upload-artifact@v3
         with:
-          name: BaDuaCoverage_Report
+          name: Ba-dua_Report
           path: /target/badua.xml #Andrebbe aggiunta la cartella in cui è il target
           if-no-files-found: error
