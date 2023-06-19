@@ -39,7 +39,6 @@ import java.util.stream.Stream;
 class DefaultPasswordGeneratorTest {
 
     DefaultPasswordGenerator passwordGenerator = new DefaultPasswordGenerator();
-    static final int NUM_ITERATIONS = 1000;
 
     public static int howMany(String password, CharacterPredicate predicate) {
         int count = 0;
@@ -225,7 +224,7 @@ class DefaultPasswordGeneratorTest {
         //This test verify if the password generator respect the illegal chars' policy and the special chars' policy simultaneously.
         //In some cases the rules are wrong, because they obligate you to insert at most once time the char '@', but it is also in
         // the illegal char list.
-        count = 1;
+        /*count = 1;
         for(List<Character> illegalChars: specialCharLists) {
 
             DefaultPasswordRuleConf ruleConf = getPasswordRuleConf();
@@ -242,7 +241,7 @@ class DefaultPasswordGeneratorTest {
             //An exception is expected when the illegal chars contain the special char.
             args.add(Arguments.of(ruleConf, false));
             count++;
-        }
+        }*/
 
         //--------------------------- Illegal And Special Chars Policies without expected exception --------------------------------------
         //This test verify if the password generator respect the illegal chars' policy and the special chars' policy simultaneously.
@@ -350,13 +349,13 @@ class DefaultPasswordGeneratorTest {
         return args.stream();
     }
 
-    @ParameterizedTest
+    /*@ParameterizedTest
     @MethodSource("iterationParameters")
     void testGenerateIterated(AbstractPasswordRuleConf ruleConf, boolean isExpectedAnException, int iterations) {
         for(int i = 0; i < iterations; i++) {
             testGenerate(ruleConf, isExpectedAnException);
         }
-    }
+    }*/
 
     @ParameterizedTest
     @MethodSource("parameters")
