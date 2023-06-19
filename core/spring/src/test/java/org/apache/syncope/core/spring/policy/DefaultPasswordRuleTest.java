@@ -56,9 +56,9 @@ class DefaultPasswordRuleTest {
 
         //PIT
         //Username as password enabled
-        /*ruleConf = getPasswordRuleConf();
+        ruleConf = getPasswordRuleConf();
         ruleConf.setUsernameAllowed(true);
-        args.add(Arguments.of(ruleConf, false));*/
+        args.add(Arguments.of(ruleConf, false));
 
 
         return args.stream();
@@ -93,6 +93,7 @@ class DefaultPasswordRuleTest {
         ruleConf.setRepeatSame(2);
         rule.setConf(ruleConf);
         args.add(Arguments.of(rule, "user", "HolaHola%01", false));
+
 
         return args.stream();
     }
@@ -139,12 +140,12 @@ class DefaultPasswordRuleTest {
         ruleConf.setMaxLength(16);
         ruleConf.setAlphabetical(1);
         ruleConf.setDigit(1);
-//        ruleConf.setRepeatSame(2);
+        ruleConf.setRepeatSame(2);
         ruleConf.setUsernameAllowed(false);
         ruleConf.setSpecial(1);
         ruleConf.getSpecialChars().add('@');
         ruleConf.getSpecialChars().add('%');
-//        ruleConf.getIllegalChars().add('^');
+        ruleConf.getIllegalChars().add('^');
         ruleConf.getWordsNotPermitted().add("Ciao");
         ruleConf.getWordsNotPermitted().add("Hello");
         return ruleConf;
