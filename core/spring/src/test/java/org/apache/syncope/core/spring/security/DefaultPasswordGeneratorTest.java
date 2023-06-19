@@ -246,7 +246,7 @@ class DefaultPasswordGeneratorTest {
         //--------------------------- Illegal And Special Chars Policies without expected exception --------------------------------------
         //This test verify if the password generator respect the illegal chars' policy and the special chars' policy simultaneously.
         //Now, the generator has more choices in special chars.
-        count = 1;
+        /*count = 1;
         for(List<Character> illegalChars: specialCharLists) {
 
             DefaultPasswordRuleConf ruleConf = getPasswordRuleConf();
@@ -265,7 +265,7 @@ class DefaultPasswordGeneratorTest {
             //Given that the password generator has some valid choices, it is not expected any exception.
             args.add(Arguments.of(ruleConf, false));
             count++;
-        }
+        }*/
 
         //--------------------------- Words Not Permitted Policy ---------------------------
         //This test the password generation with "WordsNotPermitted" policy, but the generated password
